@@ -34,7 +34,7 @@ class FuzzyCorrection():
     def splitPairs(self, word):
         return [(word[:i+1], word[i+1:]) for i in range(len(word))]
 
-    @functools.cache
+    @functools.lru_cache
     def segment(self, word):
 
         if not word: return []
