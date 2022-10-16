@@ -309,8 +309,14 @@ def cheque_verification_pipeline(cheque_image, bank_name=None, segmentation_temp
     return raw_extraction_result, sanitized_result, segments
 
 def st_ui():
-    st.title('Welcome to the Automatic Cheque Clearing System 🤖')
+    # st.title('Automatic Cheque Clearing System 🤖')
+    st.markdown("""
+            <div align="center">
+                <h2> Welcome to the <br> Automatic Cheque Clearing System 🤖</h2>
+            </div>
+                """, unsafe_allow_html=True)
     st.write("""
+        ***
         In spite of the overall rapid emergence of electronic payments, huge volumes of handwritten bank cheques are issued and processed manually every day.
         
         
@@ -319,6 +325,8 @@ def st_ui():
         ***
         """)
 
+    st.sidebar.markdown("# Control Panel ⚙️")
+    st.sidebar.markdown("***")
     demo_type = st.sidebar.radio("Select the Demonstration ✨", ["Sample Document", "File Upload"])
     cheque_templates_dict = {
         "CTS-2010 (Default)" : DEFAULT_TEMPLATE_PATH,
@@ -328,8 +336,8 @@ def st_ui():
     }
 
     if demo_type == "File Upload":
-        cheque_image = st.sidebar.file_uploader("Upload the Cheque Image", type=['png', 'jpg', 'jpeg'])
-        cheque_template_name = st.sidebar.selectbox("Choose the cheque template", cheque_templates_dict.keys())
+        cheque_image = st.sidebar.file_uploader("Upload the Cheque Image 📤", type=['png', 'jpg', 'jpeg'])
+        cheque_template_name = st.sidebar.selectbox("Choose the cheque template 🧾", cheque_templates_dict.keys())
         cheque_template_path = cheque_templates_dict[cheque_template_name]
     else:
         selector_dict = {
@@ -353,6 +361,7 @@ def st_ui():
         cheque_template_path = sample_cheque["template_path"]
         
     if cheque_image is None:
+        st.sidebar.markdown("***")
         return
     
     raw_image = Image.open(cheque_image)
@@ -426,6 +435,8 @@ def st_ui():
         
         st.markdown("##### Verification Result")
         st.json(verification_result, expanded=False)
+    
+    st.sidebar.markdown("***")
 
 if __name__ == "__main__":
     st_ui()
