@@ -1,0 +1,10 @@
+opencv-python
+numpy
+python-dotenv
+pandas
+Pillow
+pydaisi
+streamlit
+shapely
+rapidfuzz
+azure-cognitiveservices-vision-computervision
