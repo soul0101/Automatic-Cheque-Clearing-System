@@ -23,7 +23,7 @@ DIR = os.path.dirname(__file__)
 
 signature_verification_toolkit = pyd.Daisi("soul0101/Signature Verification Toolkit")
 try:
-    signature_verification_toolkit.workers.number == 0:
+    if signature_verification_toolkit.workers.number == 0:
         signature_verification_toolkit.workers.set(1)
 except:
     pass
