@@ -22,11 +22,11 @@ load_dotenv()
 DIR = os.path.dirname(__file__)
 
 signature_verification_toolkit = pyd.Daisi("soul0101/Signature Verification Toolkit")
-try:
-    if signature_verification_toolkit.workers.number == 0:
-        signature_verification_toolkit.workers.set(1)
-except:
-    pass
+# try:
+#     if signature_verification_toolkit.workers.number == 0:
+#         signature_verification_toolkit.workers.set(1)
+# except:
+#     pass
 
 def crop_to_cheque(img, send_steps=False):
     """
@@ -241,6 +241,26 @@ def get_df_from_result(result):
     return df
 
 @st.experimental_memo
+def signature_cleaner(signatures):
+    """
+    This function takes in a list of signatures, or a single signature and
+    returns the cleaned signature images (removal of background lines and text).
+
+    Parameters
+    ----------
+    signatures: np.ndarray or list<np.ndarray>
+        If a list is received, it is first sanitized and normalized, and output is
+        returned for each signature. If a single signature is received, there is no
+        sanitization step, and the signature is normalized before output.
+    
+    Returns
+    -------
+    list<np.ndarray>
+        The output is a list of cleaned signature images.
+    """
+    return signature_verification_toolkit.signature_cleaner(signatures).value
+
+@st.experimental_memo
 def verify_signatures(sig1_np, sig2_np):
     """
     Verify two signatures for match
@@ -428,7 +448,7 @@ def st_ui():
             col2.image(check_sign_np, "Sign to be verified")   
 
         with st.spinner("Cleaning Signatures..."):
-            cleaned_orig_sign, cleaned_check_sign = signature_verification_toolkit.signature_cleaner([orig_sign_np, check_sign_np]).value
+            cleaned_orig_sign, cleaned_check_sign = signature_cleaner([orig_sign_np, check_sign_np])
 
         with st.expander("Cleaned Signatures", expanded=True):
             col1, col2 = st.columns(2)
