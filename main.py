@@ -344,23 +344,19 @@ def st_ui():
         cheque_image = st.sidebar.file_uploader("Upload the Cheque Image 📤", type=['png', 'jpg', 'jpeg'])
         cheque_template_name = st.sidebar.selectbox("Choose the cheque template 🧾", cheque_templates_dict.keys())
         cheque_template_path = cheque_templates_dict[cheque_template_name]
-        original_signature_path = './images/original_sign.png' # Default
     else:
         selector_dict = {
             "Sample 1": {
                 "image_path": "./images/icici1_tilted.png",
-                "template_path": ICICI_TEMPLATE_PATH,
-                "signature_path": './images/original_sign.png'
+                "template_path": ICICI_TEMPLATE_PATH
             },
             "Sample 2": {
                 "image_path": "./images/ab1.jpeg",
-                "template_path": AXIS_TEMPLATE_PATH,
-                "signature_path": './images/ab1_sign.png'
+                "template_path": AXIS_TEMPLATE_PATH
             },
             "Sample 3": {
                 "image_path": "./images/sb1.jpeg",
-                "template_path": SYNDICATE_TEMPLATE_PATH,
-                "signature_path": './images/sb1_sign.png'
+                "template_path": SYNDICATE_TEMPLATE_PATH
             }
         } 
 
@@ -368,7 +364,6 @@ def st_ui():
         sample_cheque = selector_dict[document_selector]    
         cheque_image = sample_cheque["image_path"]
         cheque_template_path = sample_cheque["template_path"]
-        original_signature_path = sample_cheque["signature_path"]
         
     if cheque_image is None:
         st.sidebar.markdown("***")
@@ -423,7 +418,7 @@ def st_ui():
             """)
 
         st.markdown("#### Signature Verification")
-        orig_sign_np = cv2.imread(original_signature_path)
+        orig_sign_np = cv2.imread(os.path.join(DIR, r'./images/original_sign.png'))
         check_sign_np = segmentation_result['sign_area']
 
 
