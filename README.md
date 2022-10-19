@@ -40,6 +40,62 @@ verify the signature.
 
 ![image](https://user-images.githubusercontent.com/53980340/196206804-d6bd5348-0644-4b1c-ae67-3d94ea6eba56.png)
 
+### Example API
+```python
+import os, sys
+import json
+import numpy as np
+from PIL import Image
+
+import pydaisi as pyd
+automatic_cheque_clearing_system = pyd.Daisi("soul0101/Automatic Cheque Clearing System")
+
+raw_image = np.array(Image.open('./images/icici1_tilted.png'))
+segmentation_template = json.loads(open('./templates/icici.json', "r").read())
+
+raw_extraction_result_pipeline, sanitized_result_pipeline, segments_pipeline = automatic_cheque_clearing_system.cheque_verification_pipeline(raw_image, segmentation_template=segmentation_template).value
+```
+
+### Template Format
+```
+All dimensions are in millimeter
+{
+  "cheque_height": <cheque height>,
+  "cheque_width": <cheque width>,
+  "bounding_boxes": {
+    "acc_number": [x, y, w, h],
+    "bank_details": [x, y, w, h],
+    "payee": [x, y, w, h],
+    "courtesy_amount": [x, y, w, h],
+    "legal_amount_line_1": [x, y, w, h],
+    "legal_amount_line_2": [x, y, w, h],
+    "date_box": [x, y, w, h],
+    "micr_strip": [x, y, w, h],
+    "sign_area": [x, y, w, h]
+  }
+}
+```
+
+### CTS-2010 Template
+
+```json
+{
+  "cheque_height": 92,
+  "cheque_width": 202,
+  "bounding_boxes": {
+    "acc_number": [24, 42, 90, 15],
+    "bank_details": [0, 0, 144, 15],
+    "payee": [25, 18, 145, 9],
+    "courtesy_amount": [143, 31, 54, 13],
+    "legal_amount_line_1": [29, 25, 152, 9.5],
+    "legal_amount_line_2": [17, 35, 115, 9.5],
+    "date_box": [144, 3, 56, 15],
+    "micr_strip": [25, 78, 152, 13],
+    "sign_area": [148, 55, 48, 25]
+  }
+}
+```
+
 ### Credits
 - https://github.com/victordibia/signver
 - <a href="https://www.freepik.com/free-photo/hand-using-laptop-computer-with-virtual-screen-document-online-approve-paperless-quality-assurance-erp-management-concept_24755711.htm#query=document%20scanner&position=37&from_view=search&track=sph#position=37&query=document%20scanner">Image by DilokaStudio</a> on Freepik
